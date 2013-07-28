@@ -23,11 +23,14 @@ cp ../../replacements/find_extract_location.sh .
 cp ../../replacements/ubuntu_deploy.sh .
 cp ../../replacements/updater-script ./META-INF/com/google/android/
 cd ../../replacements/targz
-tar uf ../../tmp/zip/saucy-preinstalled-touch-armhf.tar *
 tar --delete -f ../../tmp/zip/saucy-preinstalled-touch-armhf.tar --wildcards \
 	SWAP.swap \
 	var/cache/apt/pkgcache.bin \
-	var/lib/apt/lists/*
+	var/lib/apt/lists/* \
+	etc/fstab \
+	etc/init/lxc-android-boot.conf \
+	etc/apt/sources.list
+tar uf ../../tmp/zip/saucy-preinstalled-touch-armhf.tar *
 cd ../../tmp/zip
 
 echo "Compressing files…"
