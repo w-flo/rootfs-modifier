@@ -1,0 +1,37 @@
+ui_print("");
+ui_print("Welcome to the Ubuntu RootFS Updater");
+ui_print("");
+
+show_progress(1.000000, 60);
+
+ui_print("Mounting system and userdata partitions...");
+if !is_mounted("/system") then run_program("/sbin/mount","/system"); endif;
+if !is_mounted("/data") then run_program("/sbin/mount","/data"); endif;
+set_progress(0.100000);
+
+package_extract_file("find_extract_location.sh", "/tmp/find_extract_location.sh");
+set_perm(0, 0, 0777, "/tmp/find_extract_location.sh");
+run_program("/tmp/find_extract_location.sh");
+
+ifelse(getprop("ubuntu.rootfs.extract.location") != "failed",
+(
+    ui_print("Copying the ubuntu rootfs tarball to");
+    ui_print(getprop("ubuntu.rootfs.extract.location"));
+    package_extract_file("saucy-preinstalled-touch-armhf.tar.gz", getprop("ubuntu.rootfs.extract.location"));
+    package_extract_file("ubuntu_deploy.sh", "/tmp/ubuntu_deploy.sh");
+    set_perm(0, 0, 0777, "/tmp/ubuntu_deploy.sh");
+    set_progress(0.300000);
+
+    ui_print("Deploying Ubuntu Touch...");
+    run_program("/tmp/ubuntu_deploy.sh");
+    set_progress(0.800000);
+
+    unmount("/data");
+    unmount("/system");
+    run_program("/sbin/sync");
+    set_progress(1.000000);
+),
+(
+    abort("No suitable temporary partition for file extraction found! Try wiping /data or make sure there's enough free space on your SD card.");
+));
+

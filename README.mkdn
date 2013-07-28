@@ -1,0 +1,15 @@
+Ubuntu Touch RootFS Modifier for Desire Z
+=========================================
+
+This script takes a zip file "saucy-preinstalled-touch-armhf.zip" (as can be downloaded from Ubuntu) and makes some changes, so it can be used with the Desire Z. Put the zip file in this directory, then call ./modify.sh. The output file will be called "modified-saucy-preinstalled-touch-armhf.zip".
+
+What are the modifications?
+---------------------------
+Check the files in the "replacements" directory:
+
+* Scripts for flashing are modified to copy the rootfs tarball to /sdcard instead of /data if /data is too small (that is the case for our Desire Z). I posted a similar patch to Launchpad bug #1145984.
+* The file system table (fstab) is pre-populated with /system and /vendor partitions for the Desire Z because the script that is responsible for creating those table entries automatically doesn't work with our device. (Either because I configured the kernel in a bad way or some driver is missing some features, or for whatever reason.. /dev/block should have friendly names for the partitions, but it doesn't.)
+* Apparently, there should be /data in fstab as well, but as /data is already monted as /, this fails, so this script disables mounting of /data in the lxc boot script. Probably not the right solution, but it works for now.
+* Add configuration files for the Desire Z: DPI settings and device access rights (udev rules).
+* Disable swap and remove the swap file to save some space, our partition is really small
+* Change apt settings to save a little more space
