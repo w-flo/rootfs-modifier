@@ -26,6 +26,7 @@ cd ../../replacements/targz
 tar --delete -f ../../tmp/zip/saucy-preinstalled-touch-armhf.tar --wildcards \
 	SWAP.swap \
 	var/cache/apt/pkgcache.bin \
+	var/cache/apt/srcpkgcache.bin \
 	var/lib/apt/lists/* \
 	etc/fstab \
 	etc/init/lxc-android-boot.conf \
