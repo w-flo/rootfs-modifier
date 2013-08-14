@@ -1,10 +1,10 @@
 #!/sbin/sh
 
 # threshold for free space on /data in kib
-datafree_threshold=2097152
+datafree_threshold=$(expr __UBUNTU_ROOTFS_SIZE__ / 512)
 
 # threshold for free space on sdcard in kib
-sdfree_threshold=512000
+sdfree_threshold=$(expr __UBUNTU_ROOTFS_SIZE__ / 1024)
 
 
 # check if the given parameter $1 is
@@ -30,7 +30,7 @@ check_mount() {
         fi
 
         # check free space on this partition
-        freesize=$(df -P | grep $1 | awk '{ print $4 }')
+        freesize=$(df -P -B 1024 | grep $1 | awk '{ print $4 }')
         if [ -z $freesize ]; then freesize=0; fi
 
         if [ $freesize -ge $2 ]; then
@@ -55,6 +55,14 @@ check_mount() {
 check_mount "/data" $datafree_threshold ||
 check_mount "/ext/sdcard" $sdfree_threshold ||
 check_mount "/sdcard" $sdfree_threshold ||
-/system/bin/setprop ubuntu.rootfs.extract.location "failed"
+/system/bin/setprop ubuntu.rootfs.extract.location "failed-targz"
+
+datasize=$(df -P -B 1024 | grep "/data" | awk '{ print $4 }')
+if [ -z $datasize ]; then datasize=0; fi
+if [ $datasize -lt $(expr __UBUNTU_ROOTFS_SIZE__ / 1024) ]; then
+    /system/bin/setprop ubuntu.rootfs.extract.location "failed-rootfs"
+    echo "/data: Not enough free space to store the Ubuntu RootFS!"
+fi
+
 
 sync

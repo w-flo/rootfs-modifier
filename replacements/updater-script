@@ -13,25 +13,31 @@ package_extract_file("find_extract_location.sh", "/tmp/find_extract_location.sh"
 set_perm(0, 0, 0777, "/tmp/find_extract_location.sh");
 run_program("/tmp/find_extract_location.sh");
 
-ifelse(getprop("ubuntu.rootfs.extract.location") != "failed",
+ifelse(getprop("ubuntu.rootfs.extract.location") != "failed-targz",
 (
-    ui_print("Copying the ubuntu rootfs tarball to");
-    ui_print(getprop("ubuntu.rootfs.extract.location"));
-    package_extract_file("saucy-preinstalled-touch-armhf.tar.gz", getprop("ubuntu.rootfs.extract.location"));
-    package_extract_file("ubuntu_deploy.sh", "/tmp/ubuntu_deploy.sh");
-    set_perm(0, 0, 0777, "/tmp/ubuntu_deploy.sh");
-    set_progress(0.300000);
+	ifelse(getprop("ubuntu.rootfs.extract.location") != "failed-rootfs",
+	(
+		ui_print("Copying the ubuntu rootfs tarball to");
+		ui_print(getprop("ubuntu.rootfs.extract.location"));
+		package_extract_file("saucy-preinstalled-touch-armhf.tar.gz", getprop("ubuntu.rootfs.extract.location"));
+		package_extract_file("ubuntu_deploy.sh", "/tmp/ubuntu_deploy.sh");
+		set_perm(0, 0, 0777, "/tmp/ubuntu_deploy.sh");
+		set_progress(0.300000);
 
-    ui_print("Deploying Ubuntu Touch...");
-    run_program("/tmp/ubuntu_deploy.sh");
-    set_progress(0.800000);
+		ui_print("Deploying Ubuntu Touch...");
+		run_program("/tmp/ubuntu_deploy.sh");
+		set_progress(0.800000);
 
-    unmount("/data");
-    unmount("/system");
-    run_program("/sbin/sync");
-    set_progress(1.000000);
+		unmount("/data");
+		unmount("/system");
+		run_program("/sbin/sync");
+		set_progress(1.000000);
+	),
+	(
+		abort("Not enough free space on data partition! Try wiping /data, then re-flash this file. Your device will fail to boot properly until the Ubuntu RootFS is flashed correctly!");
+	));
 ),
 (
-    abort("No suitable temporary partition for file extraction found! Try wiping /data or make sure there's enough free space on your SD card.");
+    abort("No suitable temporary partition for file extraction found! Try wiping /data or make sure there's enough free space on your SD card, then re-flash this file. Your device will fail to boot properly until the Ubuntu RootFS is flashed correctly!");
 ));
 

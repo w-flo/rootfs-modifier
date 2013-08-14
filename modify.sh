@@ -34,6 +34,10 @@ tar --delete -f ../../tmp/zip/saucy-preinstalled-touch-armhf.tar --wildcards \
 tar uf ../../tmp/zip/saucy-preinstalled-touch-armhf.tar *
 cd ../../tmp/zip
 
+# http://serverfault.com/questions/9930/get-extracted-size-from-tgz-before-extracting
+rootfs_size=$(tar tvf saucy-preinstalled-touch-armhf.tar | awk '{SUM += $3} END {print SUM+1024*1024*20}')
+sed -i "s/__UBUNTU_ROOTFS_SIZE__/$rootfs_size/" find_extract_location.sh
+
 echo "Compressing files…"
 gzip saucy-preinstalled-touch-armhf.tar
 zip -r ../../modified-saucy-preinstalled-touch-armhf.zip * > /dev/null
