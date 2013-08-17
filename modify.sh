@@ -14,32 +14,39 @@ fi
 mkdir -p tmp/zip
 cd tmp/zip
 
-echo "Extracting files…"
+echo "Extracting files… (Need root to preserve file owner!!)"
 unzip ../../saucy-preinstalled-touch-armhf.zip > /dev/null
-gunzip saucy-preinstalled-touch-armhf.tar.gz
+mkdir targz
+cd targz
+tar xfz ../saucy-preinstalled-touch-armhf.tar.gz --exclude='dev/*' --same-owner
+rm ../saucy-preinstalled-touch-armhf.tar.gz
 
 echo "Updating files…"
-cp ../../replacements/find_extract_location.sh .
-cp ../../replacements/ubuntu_deploy.sh .
-cp ../../replacements/updater-script ./META-INF/com/google/android/
-cd ../../replacements/targz
-tar --delete -f ../../tmp/zip/saucy-preinstalled-touch-armhf.tar --wildcards \
+rm -r \
 	SWAP.swap \
 	var/cache/apt/pkgcache.bin \
 	var/cache/apt/srcpkgcache.bin \
 	var/lib/apt/lists/* \
-	etc/fstab \
-	etc/init/lxc-android-boot.conf \
-	etc/apt/sources.list
-tar uf ../../tmp/zip/saucy-preinstalled-touch-armhf.tar *
-cd ../../tmp/zip
+	var/log/lastlog
+cp -r ../../../replacements/targz/* .
 
-# http://serverfault.com/questions/9930/get-extracted-size-from-tgz-before-extracting
-rootfs_size=$(tar tvf saucy-preinstalled-touch-armhf.tar | awk '{SUM += $3} END {print SUM+1024*1024*20}')
+sed -i '/  . FIXME: Nexus7 (grouper)/ i\  # FIXME: HTC Desire Z (vision)\n  /dev/kgsl-2d0 rw,\n  /dev/genlock rw,\n  /sys/devices/system/soc/soc0/id rw,\n' usr/share/apparmor/easyprof/templates/ubuntu/1.0/ubuntu-sdk
+
+cd ..
+cp ../../replacements/find_extract_location.sh .
+cp ../../replacements/ubuntu_deploy.sh .
+cp ../../replacements/updater-script ./META-INF/com/google/android/
+
+rootfs_size=$(du -s --bytes targz/ | awk '{print $1}')
 sed -i "s/__UBUNTU_ROOTFS_SIZE__/$rootfs_size/" find_extract_location.sh
 
+
 echo "Compressing files…"
-gzip saucy-preinstalled-touch-armhf.tar
+cd targz
+tar cfz ../saucy-preinstalled-touch-armhf.tar.gz *
+cd ..
+rm -fr ./targz
+
 zip -r ../../modified-saucy-preinstalled-touch-armhf.zip * > /dev/null
 cd ../../
 rm -r tmp/
