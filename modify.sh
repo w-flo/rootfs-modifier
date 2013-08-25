@@ -30,7 +30,7 @@ rm -r \
 	var/log/lastlog
 cp -r ../../../replacements/targz/* .
 
-sed -i '/  . FIXME: Nexus7 (grouper)/ i\  # FIXME: HTC Desire Z (vision)\n  /dev/kgsl-2d0 rw,\n  /dev/genlock rw,\n  /sys/devices/system/soc/soc0/id rw,\n' usr/share/apparmor/easyprof/templates/ubuntu/1.0/ubuntu-sdk
+sed -i '/  . FIXME: Nexus7 (grouper)/ i\  # FIXME: HTC Desire Z (vision)\n  /dev/kgsl-2d0 rw,\n  /dev/genlock rw,\n  /sys/devices/system/soc/soc0/id r,\n' usr/share/apparmor/easyprof/templates/ubuntu/1.0/ubuntu-sdk
 
 cd ..
 cp ../../replacements/find_extract_location.sh .
