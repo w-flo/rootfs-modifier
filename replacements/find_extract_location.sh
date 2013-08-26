@@ -64,5 +64,10 @@ if [ $datasize -lt $(expr __UBUNTU_ROOTFS_SIZE__ / 1024) ]; then
     echo "/data: Not enough free space to store the Ubuntu RootFS!"
 fi
 
+datafs=$(mount | grep ' on /data type ' | sed -e 's/^.* on \/data type \(.*\) .*$/\1/')
+if [ $datafs != "ext4" ]; then
+    /system/bin/setprop ubuntu.rootfs.extract.location "failed-datafstype"
+    echo "/data: expecting ext4 file system, found $datafs"
+fi
 
 sync

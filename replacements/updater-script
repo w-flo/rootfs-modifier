@@ -13,31 +13,30 @@ package_extract_file("find_extract_location.sh", "/tmp/find_extract_location.sh"
 set_perm(0, 0, 0777, "/tmp/find_extract_location.sh");
 run_program("/tmp/find_extract_location.sh");
 
-ifelse(getprop("ubuntu.rootfs.extract.location") != "failed-targz",
-(
-	ifelse(getprop("ubuntu.rootfs.extract.location") != "failed-rootfs",
-	(
-		ui_print("Copying the ubuntu rootfs tarball to");
-		ui_print(getprop("ubuntu.rootfs.extract.location"));
-		package_extract_file("saucy-preinstalled-touch-armhf.tar.gz", getprop("ubuntu.rootfs.extract.location"));
-		package_extract_file("ubuntu_deploy.sh", "/tmp/ubuntu_deploy.sh");
-		set_perm(0, 0, 0777, "/tmp/ubuntu_deploy.sh");
-		set_progress(0.300000);
-
-		ui_print("Deploying Ubuntu Touch...");
-		run_program("/tmp/ubuntu_deploy.sh");
-		set_progress(0.800000);
-
-		unmount("/data");
-		unmount("/system");
-		run_program("/sbin/sync");
-		set_progress(1.000000);
-	),
-	(
-		abort("Not enough free space on data partition! Try wiping /data, then re-flash this file. Your device will fail to boot properly until the Ubuntu RootFS is flashed correctly!");
-	));
-),
-(
+if getprop("ubuntu.rootfs.extract.location") == "failed-targz" then
     abort("No suitable temporary partition for file extraction found! Try wiping /data or make sure there's enough free space on your SD card, then re-flash this file. Your device will fail to boot properly until the Ubuntu RootFS is flashed correctly!");
-));
+endif;
 
+if getprop("ubuntu.rootfs.extract.location") == "failed-rootfs" then
+	abort("Not enough free space on data partition! Try wiping /data, then re-flash this file. Your device will fail to boot properly until the Ubuntu RootFS is flashed correctly!");
+endif;
+
+if getprop("ubuntu.rootfs.extract.location") == "failed-datafstype" then
+	abort("Data partition does not use the ext4 file system! Reformat the partition to use ext4, for example using the 4ext recovery.");
+endif;
+
+ui_print("Copying the ubuntu rootfs tarball to");
+ui_print(getprop("ubuntu.rootfs.extract.location"));
+package_extract_file("saucy-preinstalled-touch-armhf.tar.gz", getprop("ubuntu.rootfs.extract.location"));
+package_extract_file("ubuntu_deploy.sh", "/tmp/ubuntu_deploy.sh");
+set_perm(0, 0, 0777, "/tmp/ubuntu_deploy.sh");
+set_progress(0.300000);
+
+ui_print("Deploying Ubuntu Touch...");
+run_program("/tmp/ubuntu_deploy.sh");
+set_progress(0.800000);
+
+unmount("/data");
+unmount("/system");
+run_program("/sbin/sync");
+set_progress(1.000000);
