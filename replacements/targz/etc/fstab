@@ -5,5 +5,5 @@
 # /SWAP.swap		none	swap	sw		0	0
 
 /dev/mmcblk0p25	/system	ext4	ro,noatime,nodiratime,errors=remount-ro	0	0
-#/dev/mmcblk0p26	/data	ext4	noatime,nodiratime,errors=remount-ro	0	0
+/dev/mmcblk0p26	/data	ext4	noatime,nodiratime,errors=remount-ro	0	0
 /system/vendor	/vendor	auto	ro,bind	0	0
