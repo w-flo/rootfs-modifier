@@ -1,0 +1,126 @@
+SectionVerb {
+	EnableSequence [
+		#exec "echo enabling VoiceCall >> /home/phablet/ucm.log"
+	]
+
+	DisableSequence [
+		#exec "echo disabling VoiceCall >> /home/phablet/ucm.log"
+	]
+
+	Value {
+		CapturePCM "hw:msmaudio"
+		PlaybackPCM "hw:msmaudio"
+	}
+}
+
+SectionDevice."Earpiece" {
+	#Name "Earpiece"
+	Comment "Handset Rx device"
+
+	# FIXME
+	ConflictingDevice [
+		"Headphones"
+		"Speaker"
+	]
+
+	EnableSequence [
+		#exec "echo enabling earpiece for VoiceCall >> /home/phablet/ucm.log"
+	]
+
+	DisableSequence [
+		#exec "echo disabling earpiece for VoiceCall >> /home/phablet/ucm.log"
+	]
+
+	Value {
+		PlaybackChannels "1"
+	}
+}
+
+SectionDevice."Speaker" {
+	#Name "Speaker"
+	Comment "Speaker Rx device"
+
+	# FIXME
+	ConflictingDevice [
+		"Earpiece"
+		"Headphones"
+	]
+
+	EnableSequence [
+		#exec "echo enabling speaker for voicecall >> /home/phablet/ucm.log"
+	]
+
+	DisableSequence [
+		#exec "echo disabling speaker for voicecall >> /home/phablet/ucm.log"
+	]
+
+	Value {
+		PlaybackChannels "1"
+	}
+}
+
+SectionDevice."Headphones" {
+	#Name "Headphones"
+	Comment "Headset Rx device"
+
+	# FIXME
+	ConflictingDevice [
+		"Earpiece"
+		"Speaker"
+	]
+
+	EnableSequence [
+		#exec "echo enabling headphones for voicecall >> /home/phablet/ucm.log"
+	]
+
+	DisableSequence [
+		#exec "echo disabling headphones for voicecall >> /home/phablet/ucm.log"
+	]
+
+	Value {
+		PlaybackChannels "1"
+	}
+}
+
+SectionDevice."Headset" {
+	#Name "Headset"
+	Comment "Headset Microphone"
+
+	# FIXME
+	ConflictingDevice [
+		"Handset"
+	]
+
+	EnableSequence [
+		#exec "echo enabling headset for voicecall >> /home/phablet/ucm.log"
+	]
+
+	DisableSequence [
+		#exec "echo disabling headset for voicecall >> /home/phablet/ucm.log"
+	]
+
+	Value {
+		CaptureChannels "1"
+	}
+}
+
+SectionDevice."Handset" {
+	#Name "Handset"
+	Comment "Handset Microphone"
+
+	ConflictingDevice [
+		"Headset"
+	]
+
+	EnableSequence [
+		#exec "echo enabling handset for voicecall >> /home/phablet/ucm.log"
+	]
+
+	DisableSequence [
+		#exec "echo disabling handset for voicecall >> /home/phablet/ucm.log"
+	]
+
+	Value {
+		CaptureChannels "1"
+	}
+}

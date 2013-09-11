@@ -1,0 +1,150 @@
+SectionVerb {
+	EnableSequence [
+		#exec "echo enabling hifi >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		# FIXME: "5" is a session ID, hope it's constant..
+		cset "numid=2,iface=MIXER,name='Stream' 5,6,1"
+	]
+
+	DisableSequence [
+		#exec "echo disabling hifi >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+	]
+
+	Value {
+		TQ "HiFi"
+		
+		CapturePCM "hw:msmaudio"
+		PlaybackPCM "hw:msmaudio"
+	}
+}
+
+SectionDevice."Earpiece" {
+	#Name "Earpiece"
+	Comment "Handset Rx device"
+
+	# FIXME
+	ConflictingDevice [
+		"Headphones"
+	]
+
+	EnableSequence [
+		#exec "echo enabling earpiece >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		cset "iface=MIXER,name='handset_rx' 1"
+	]
+
+	DisableSequence [
+		#exec "echo disabling earpiece >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		cset "iface=MIXER,name='handset_rx' 0"
+	]
+
+	Value {
+		PlaybackChannels "1"
+	}
+}
+
+SectionDevice."Speaker" {
+	#Name "Speaker"
+	Comment "Speaker Rx device"
+
+	# FIXME
+	ConflictingDevice [
+		"Earpiece"
+	]
+
+	EnableSequence [
+		#exec "echo enabling speaker >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		cset "numid=16,iface=MIXER,name='speaker_mono_rx' 1"
+	]
+
+	DisableSequence [
+		#exec "echo disabling speaker >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		cset "numid=16,iface=MIXER,name='speaker_mono_rx' 0"
+	]
+
+	Value {
+		PlaybackChannels "1"
+	}
+}
+
+SectionDevice."Headphones" {
+	#Name "Headphones"
+	Comment "Headset Rx device"
+
+	# FIXME
+	ConflictingDevice [
+		"Earpiece"
+	]
+
+	EnableSequence [
+		#exec "echo enabling headphones >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		# TODO
+	]
+
+	DisableSequence [
+		#exec "echo disabling headphones >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		# TODO
+	]
+
+	Value {
+		PlaybackChannels "1"
+	}
+}
+
+SectionDevice."Headset" {
+	#Name "Headset"
+	Comment "Headset Microphone"
+
+	# FIXME
+	ConflictingDevice [
+		"Handset"
+	]
+
+	EnableSequence [
+		#exec "echo enabling headset >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		# TODO
+	]
+
+	DisableSequence [
+		#exec "echo disabling headset >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		# TODO
+	]
+
+	Value {
+		CaptureChannels "1"
+	}
+}
+
+SectionDevice."Handset" {
+	#Name "Handset"
+	Comment "Handset Microphone"
+
+	# FIXME
+	ConflictingDevice [
+		"Headset"
+	]
+
+	EnableSequence [
+		#exec "echo enabling handset >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		# TODO
+	]
+
+	DisableSequence [
+		#exec "echo disabling handset >> /home/phablet/ucm.log"
+		cdev "hw:msmaudio"
+		# TODO
+	]
+
+	Value {
+		CaptureChannels "1"
+	}
+}
