@@ -52,6 +52,7 @@ SectionDevice."Speaker" {
 	# FIXME
 	ConflictingDevice [
 		"Earpiece"
+		"Headphones"
 	]
 
 	EnableSequence [
@@ -78,22 +79,23 @@ SectionDevice."Headphones" {
 	# FIXME
 	ConflictingDevice [
 		"Earpiece"
+		"Speaker"
 	]
 
 	EnableSequence [
 		#exec "echo enabling headphones >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
-		# TODO
+		cset "numid=12,iface=MIXER,name='headset_stereo_rx' 1"
 	]
 
 	DisableSequence [
 		#exec "echo disabling headphones >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
-		# TODO
+		cset "numid=12,iface=MIXER,name='headset_stereo_rx' 0"
 	]
 
 	Value {
-		PlaybackChannels "1"
+		PlaybackChannels "2"
 	}
 }
 
