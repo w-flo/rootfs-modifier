@@ -27,7 +27,7 @@ endif;
 
 ui_print("Copying the ubuntu rootfs tarball to");
 ui_print(getprop("ubuntu.rootfs.extract.location"));
-package_extract_file("saucy-preinstalled-touch-armhf.tar.gz", getprop("ubuntu.rootfs.extract.location"));
+package_extract_file("trusty-preinstalled-touch-armhf.tar.gz", getprop("ubuntu.rootfs.extract.location"));
 package_extract_file("ubuntu_deploy.sh", "/tmp/ubuntu_deploy.sh");
 set_perm(0, 0, 0777, "/tmp/ubuntu_deploy.sh");
 set_progress(0.300000);

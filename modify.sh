@@ -1,7 +1,9 @@
 #!/bin/sh
 
-if [ -e modified-saucy-preinstalled-touch-armhf.zip ]; then
-	echo "Please remove modified-saucy-preinstalled-touch-armhf.zip!"
+DIST="trusty"
+
+if [ -e modified-$DIST-preinstalled-touch-armhf.zip ]; then
+	echo "Please remove modified-$DIST-preinstalled-touch-armhf.zip!"
 	exit 1
 fi
 
@@ -15,11 +17,11 @@ mkdir -p tmp/zip
 cd tmp/zip
 
 echo "Extracting files… (Need root to preserve file owner!!)"
-unzip ../../saucy-preinstalled-touch-armhf.zip > /dev/null
+unzip ../../$DIST-preinstalled-touch-armhf.zip > /dev/null
 mkdir targz
 cd targz
-tar xfz ../saucy-preinstalled-touch-armhf.tar.gz --exclude='dev/*' --same-owner
-rm ../saucy-preinstalled-touch-armhf.tar.gz
+tar xfz ../$DIST-preinstalled-touch-armhf.tar.gz --exclude='dev/*' --same-owner
+rm ../$DIST-preinstalled-touch-armhf.tar.gz
 
 echo "Updating files…"
 rm -r \
@@ -41,11 +43,11 @@ sed -i "s/__UBUNTU_ROOTFS_SIZE__/$rootfs_size/" find_extract_location.sh
 
 echo "Compressing files…"
 cd targz
-tar cfz ../saucy-preinstalled-touch-armhf.tar.gz *
+tar cfz ../$DIST-preinstalled-touch-armhf.tar.gz *
 cd ..
 rm -fr ./targz
 
-zip -r ../../modified-saucy-preinstalled-touch-armhf.zip * > /dev/null
+zip -r ../../modified-$DIST-preinstalled-touch-armhf.zip * > /dev/null
 cd ../../
 rm -r tmp/
 
