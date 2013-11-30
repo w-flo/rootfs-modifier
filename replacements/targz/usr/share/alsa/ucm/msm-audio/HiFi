@@ -1,13 +1,13 @@
 SectionVerb {
 	EnableSequence [
-		#exec "echo enabling hifi >> /home/phablet/ucm.log"
+		exec "echo enabling hifi >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		# FIXME: "5" is a session ID, hope it's constant..
 		cset "numid=2,iface=MIXER,name='Stream' 5,6,1"
 	]
 
 	DisableSequence [
-		#exec "echo disabling hifi >> /home/phablet/ucm.log"
+		exec "echo disabling hifi >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 	]
 
@@ -26,16 +26,17 @@ SectionDevice."Earpiece" {
 	# FIXME
 	ConflictingDevice [
 		"Headphones"
+		"Speaker"
 	]
 
 	EnableSequence [
-		#exec "echo enabling earpiece >> /home/phablet/ucm.log"
+		exec "echo enabling earpiece >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		cset "iface=MIXER,name='handset_rx' 1"
 	]
 
 	DisableSequence [
-		#exec "echo disabling earpiece >> /home/phablet/ucm.log"
+		exec "echo disabling earpiece >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		cset "iface=MIXER,name='handset_rx' 0"
 	]
@@ -56,13 +57,13 @@ SectionDevice."Speaker" {
 	]
 
 	EnableSequence [
-		#exec "echo enabling speaker >> /home/phablet/ucm.log"
+		exec "echo enabling speaker >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		cset "numid=16,iface=MIXER,name='speaker_mono_rx' 1"
 	]
 
 	DisableSequence [
-		#exec "echo disabling speaker >> /home/phablet/ucm.log"
+		exec "echo disabling speaker >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		cset "numid=16,iface=MIXER,name='speaker_mono_rx' 0"
 	]
@@ -83,13 +84,13 @@ SectionDevice."Headphones" {
 	]
 
 	EnableSequence [
-		#exec "echo enabling headphones >> /home/phablet/ucm.log"
+		exec "echo enabling headphones >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		cset "numid=12,iface=MIXER,name='headset_stereo_rx' 1"
 	]
 
 	DisableSequence [
-		#exec "echo disabling headphones >> /home/phablet/ucm.log"
+		exec "echo disabling headphones >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		cset "numid=12,iface=MIXER,name='headset_stereo_rx' 0"
 	]
@@ -109,13 +110,13 @@ SectionDevice."Headset" {
 	]
 
 	EnableSequence [
-		#exec "echo enabling headset >> /home/phablet/ucm.log"
+		exec "echo enabling headset >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		# TODO
 	]
 
 	DisableSequence [
-		#exec "echo disabling headset >> /home/phablet/ucm.log"
+		exec "echo disabling headset >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		# TODO
 	]
@@ -135,13 +136,13 @@ SectionDevice."Handset" {
 	]
 
 	EnableSequence [
-		#exec "echo enabling handset >> /home/phablet/ucm.log"
+		exec "echo enabling handset >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		# TODO
 	]
 
 	DisableSequence [
-		#exec "echo disabling handset >> /home/phablet/ucm.log"
+		exec "echo disabling handset >> /home/phablet/ucm.log"
 		cdev "hw:msmaudio"
 		# TODO
 	]
