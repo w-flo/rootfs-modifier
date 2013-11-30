@@ -29,7 +29,10 @@ rm -r \
 	var/cache/apt/pkgcache.bin \
 	var/cache/apt/srcpkgcache.bin \
 	var/lib/apt/lists/* \
-	var/log/lastlog
+	var/log/lastlog \
+	usr/share/help-langpack \
+	usr/share/icons/gnome \
+	usr/share/icons/Humanity
 cp -r ../../../replacements/targz/* .
 
 cd ..
